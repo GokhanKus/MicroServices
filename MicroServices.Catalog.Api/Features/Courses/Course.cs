@@ -10,9 +10,11 @@ namespace MicroServices.Catalog.Api.Features.Courses
 		public decimal Price { get; set; }
 		public Guid UserId { get; set; } //ilerde key cloak kullanilacak
 		public string? Picture { get; set; }
-		public DateTime CreatedDate{ get; set; } //global app'lerde DateTimeOffSet yaparak +2 -3 gibi zaman dilimlerini de tutmaliyiz
+		public DateTime CreatedDate { get; set; } //global app'lerde DateTimeOffSet yaparak +2 -3 gibi zaman dilimlerini de tutmaliyiz
 
-		public Guid	CategoryId{ get; set; }
+		public Guid CategoryId { get; set; }
 		public Category Category { get; set; } = default!;
+
+		public Feature Feature { get; set; } = default!;
 	}
 }
