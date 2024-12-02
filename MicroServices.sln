@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "catalog", "catalog", "{1526
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroServices.Catalog.Api", "MicroServices.Catalog.Api\MicroServices.Catalog.Api.csproj", "{3B0FF4C8-3AE5-4321-A86B-99B88735858F}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7AA93F4E-CB10-44C3-BC62-5F02E80F8D74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3B0FF4C8-3AE5-4321-A86B-99B88735858F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B0FF4C8-3AE5-4321-A86B-99B88735858F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B0FF4C8-3AE5-4321-A86B-99B88735858F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AA93F4E-CB10-44C3-BC62-5F02E80F8D74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AA93F4E-CB10-44C3-BC62-5F02E80F8D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AA93F4E-CB10-44C3-BC62-5F02E80F8D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AA93F4E-CB10-44C3-BC62-5F02E80F8D74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
