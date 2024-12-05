@@ -1,7 +1,9 @@
+using MicroServices.Catalog.Api;
 using MicroServices.Catalog.Api.Features.Categories;
 using MicroServices.Catalog.Api.Options;
 using MicroServices.Catalog.Api.Repositories;
-using MongoDB.Driver;
+using MicroServices.Shared.Extensions;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptionsExt();
 builder.Services.AddDatabaseServiceExt();
 
+builder.Services.AddCommonServiceExt(typeof(CatalogAssembly));
 
 var app = builder.Build();
 

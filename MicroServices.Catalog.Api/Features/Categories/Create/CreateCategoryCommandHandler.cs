@@ -15,7 +15,7 @@ namespace MicroServices.Catalog.Api.Features.Categories.Create
 
 			if (existCategory)
 			{
-				ServiceResult<CreateCategoryResponse>.Error("Category Name already exists",
+				return ServiceResult<CreateCategoryResponse>.Error("Category Name already exists",
 					$"The category name '{request.Name}' already exists", HttpStatusCode.BadRequest);
 			}
 
