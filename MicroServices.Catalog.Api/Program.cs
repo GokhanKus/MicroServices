@@ -1,3 +1,4 @@
+using MicroServices.Catalog.Api.Features.Categories;
 using MicroServices.Catalog.Api.Options;
 using MicroServices.Catalog.Api.Repositories;
 using MongoDB.Driver;
@@ -12,6 +13,8 @@ builder.Services.AddDatabaseServiceExt();
 
 
 var app = builder.Build();
+
+app.AddCategoryGroupEndpointExt();
 
 if (app.Environment.IsDevelopment())
 {
