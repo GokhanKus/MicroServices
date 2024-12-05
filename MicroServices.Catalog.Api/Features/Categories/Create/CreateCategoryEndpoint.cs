@@ -1,6 +1,5 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using MicroServices.Shared.Extensions;
 
 namespace MicroServices.Catalog.Api.Features.Categories.Create
 {
@@ -8,14 +7,8 @@ namespace MicroServices.Catalog.Api.Features.Categories.Create
 	{
 		public static RouteGroupBuilder CreateCategoryGroupItemEndpoint(this RouteGroupBuilder group)
 		{
-			group.MapPost("/", async (CreateCategoryCommand command, IMediator mediator) =>
-			{
-				var result = await mediator.Send(command);
-				return new ObjectResult(result)
-				{
-					StatusCode = result.Status.GetHashCode()
-				};
-			});
+			group.MapPost("/", async (CreateCategoryCommand command, IMediator mediator) => (await mediator.Send(command)).ToGenericResult());
+			
 			return group;
 		}
 	}
