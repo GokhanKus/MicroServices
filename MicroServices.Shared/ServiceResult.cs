@@ -108,7 +108,7 @@ namespace MicroServices.Shared
 	public class ServiceResult<T> : ServiceResult
 	{
 		public T? Data { get; set; }
-		public string? UrlAsCreated { get; set; }
+		[JsonIgnore] public string? UrlAsCreated { get; set; }
 		public static ServiceResult<T> SuccessAsOk(T data)
 		{
 			return new ServiceResult<T>
@@ -191,7 +191,7 @@ namespace MicroServices.Shared
 				Fail = new ProblemDetails
 				{
 					Title = "Validation errors occured",
-					Detail = "Please check the errors property for more details", 
+					Detail = "Please check the errors property for more details",
 					Status = HttpStatusCode.BadRequest.GetHashCode()
 				}
 			};
