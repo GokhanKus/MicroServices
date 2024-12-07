@@ -1,12 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
-using MicroServices.Catalog.Api.Features.Categories.Dtos;
-using MicroServices.Catalog.Api.Repositories;
-using MicroServices.Shared;
-using MicroServices.Shared.Extensions;
-using System.Net;
-
-namespace MicroServices.Catalog.Api.Features.Categories.GetById
+﻿namespace MicroServices.Catalog.Api.Features.Categories.GetById
 {
 	public record GetCategoryByIdQuery(Guid Id) : IRequestByServiceResult<CategoryDto>;
 
