@@ -8,7 +8,8 @@ namespace MicroServices.Catalog.Api.Features.Categories
 	{
 		public static void AddCategoryGroupEndpointExt(this WebApplication app)
 		{
-			app.MapGroup("api/categories")
+			//withtags ile swagger tarafinda course ve categories ile başlık halinde ayirdik
+			app.MapGroup("api/categories").WithTags("Categories")
 				.CreateCategoryGroupItemEndpoint()
 				.GetAllCategoryGroupItemEndpoint()
 				.GetByIdCategoryGroupItemEndpoint();

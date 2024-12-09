@@ -1,5 +1,6 @@
 using MicroServices.Catalog.Api;
 using MicroServices.Catalog.Api.Features.Categories;
+using MicroServices.Catalog.Api.Features.Courses;
 using MicroServices.Catalog.Api.Options;
 using MicroServices.Catalog.Api.Repositories;
 using MicroServices.Shared.Extensions;
@@ -18,6 +19,7 @@ builder.Services.AddCommonServiceExt(typeof(CatalogAssembly));
 var app = builder.Build();
 
 app.AddCategoryGroupEndpointExt();
+app.AddCourseGroupEndpointExt();
 
 if (app.Environment.IsDevelopment())
 {
