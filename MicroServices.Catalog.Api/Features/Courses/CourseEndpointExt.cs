@@ -12,7 +12,8 @@ namespace MicroServices.Catalog.Api.Features.Courses
 			app.MapGroup("api/courses").WithTags("Courses")
 				.CreateCourseGroupItemEndpoint()
 				.GetAllCoursesGroupItemEndpoint()
-				.GetByIdCourseGroupItemEndpoint();
+				.GetByIdCourseGroupItemEndpoint()
+				.UpdateCourseGroupItemEndpoint()
 		}
 	}
 }

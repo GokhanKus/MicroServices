@@ -1,5 +1,6 @@
 ﻿using MicroServices.Catalog.Api.Features.Courses.Create;
 using MicroServices.Catalog.Api.Features.Courses.Dtos;
+using MicroServices.Catalog.Api.Features.Courses.Update;
 
 namespace MicroServices.Catalog.Api.Features.Courses
 {
@@ -8,6 +9,8 @@ namespace MicroServices.Catalog.Api.Features.Courses
 		public CourseMapping()
 		{
 			CreateMap<CreateCourseCommand, Course>();
+			CreateMap<UpdateCourseCommand, Course>();
+
 			CreateMap<CourseDto, Course>().ReverseMap();
 			CreateMap<FeatureDto, Feature>().ReverseMap();
 		}
