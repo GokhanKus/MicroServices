@@ -28,7 +28,8 @@ namespace MicroServices.Catalog.Api.Features.Courses.GetAll
 		{
 			group.MapGet("/", async (IMediator mediator)
 				=> (await mediator.Send(new GetAllCoursesQuery())).ToGenericResult())
-				.WithName("GetAllCourses");
+				.WithName("GetAllCourses")
+				.MapToApiVersion(1, 0);
 
 			return group;
 		}

@@ -28,7 +28,8 @@ namespace MicroServices.Catalog.Api.Features.Courses.GetById
 		{
 			group.MapGet("/{id:guid}", async (Guid id, IMediator mediator)
 				=> (await mediator.Send(new GetCourseByIdQuery(id))).ToGenericResult())
-				.WithName("GetByIdCourse");
+				.WithName("GetByIdCourse")
+				.MapToApiVersion(1, 0);
 
 			return group;
 		}
