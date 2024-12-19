@@ -12,7 +12,7 @@ namespace MicroServices.Basket.Api.Features.Baskets.AddBasketItem
 		public async Task<ServiceResult> Handle(AddBasketItemCommand request, CancellationToken cancellationToken)
 		{
 			// TODO : userId tokendan gelecek, ancak henüz bu mekanizma olmadigi icin simdlik temsili olarak bir tane random userId uretelim
-			var userId = Guid.NewGuid(); 
+			var userId = Guid.NewGuid();
 			var cacheKey = string.Format(BasketConst.BasketCacheKey, userId);
 
 			var basketAsString = await distributedCache.GetStringAsync(cacheKey, cancellationToken);
@@ -24,27 +24,30 @@ namespace MicroServices.Basket.Api.Features.Baskets.AddBasketItem
 			if (string.IsNullOrEmpty(basketAsString))
 			{
 				currentBasket = new BasketDto(userId, [newBasketItem]);
+				await AddToRedis(cacheKey, currentBasket, cancellationToken);
+				return ServiceResult.SuccessAsNoContent();
+
 			}
-			else
+
+			currentBasket = JsonSerializer.Deserialize<BasketDto>(basketAsString);
+
+			//client bir kursu birden fazla sepete ekleyemez, onun için asagida ufak bir business var sonradan refactor edilecek
+			var existingBasketItem = currentBasket!.BasketItems.FirstOrDefault(bi => bi.Id == request.CourseId);
+			if (existingBasketItem is not null)
 			{
-				currentBasket = JsonSerializer.Deserialize<BasketDto>(basketAsString);
-
-				//client bir kursu birden fazla sepete ekleyemez, onun için asagida ufak bir business var sonradan refactor edilecek
-				var existingBasketItem = currentBasket.BasketItems.FirstOrDefault(bi => bi.Id == request.CourseId);
-				if (existingBasketItem is not null)
-				{
-					currentBasket.BasketItems.Remove(existingBasketItem);
-					currentBasket.BasketItems.Add(newBasketItem);
-				}
-				else
-				{
-					currentBasket.BasketItems.Add(newBasketItem);
-				}
-
+				currentBasket.BasketItems.Remove(existingBasketItem);
 			}
-			basketAsString = JsonSerializer.Serialize(currentBasket);
-			await distributedCache.SetStringAsync(cacheKey, basketAsString, cancellationToken);
+
+			currentBasket.BasketItems.Add(newBasketItem);
+			await AddToRedis(cacheKey, currentBasket, cancellationToken);
 			return ServiceResult.SuccessAsNoContent();
+
+		}
+
+		private async Task AddToRedis(string cacheKey, BasketDto? currentBasket, CancellationToken cancellationToken)
+		{
+			var basketAsString = JsonSerializer.Serialize(currentBasket);
+			await distributedCache.SetStringAsync(cacheKey, basketAsString, cancellationToken);
 		}
 	}
 }
