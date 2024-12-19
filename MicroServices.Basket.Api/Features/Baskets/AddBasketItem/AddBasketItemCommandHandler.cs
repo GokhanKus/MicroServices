@@ -12,7 +12,8 @@ namespace MicroServices.Basket.Api.Features.Baskets.AddBasketItem
 		public async Task<ServiceResult> Handle(AddBasketItemCommand request, CancellationToken cancellationToken)
 		{
 			// TODO : userId tokendan gelecek, ancak henüz bu mekanizma olmadigi icin simdlik temsili olarak bir tane random userId uretelim
-			var userId = Guid.NewGuid();
+			//var userId = Guid.NewGuid();
+			var userId = Guid.Parse("9e2fdd10-dbde-4a4b-b111-666526e9970f");
 			var cacheKey = string.Format(BasketConst.BasketCacheKey, userId);
 
 			var basketAsString = await distributedCache.GetStringAsync(cacheKey, cancellationToken);
