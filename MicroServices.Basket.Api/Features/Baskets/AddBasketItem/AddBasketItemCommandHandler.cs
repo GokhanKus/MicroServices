@@ -33,13 +33,13 @@ namespace MicroServices.Basket.Api.Features.Baskets.AddBasketItem
 			currentBasket = JsonSerializer.Deserialize<BasketDto>(basketAsString);
 
 			//client bir kursu birden fazla sepete ekleyemez, onun için asagida ufak bir business var sonradan refactor edilecek
-			var existingBasketItem = currentBasket!.BasketItems.FirstOrDefault(bi => bi.Id == request.CourseId);
+			var existingBasketItem = currentBasket!.Items.FirstOrDefault(bi => bi.Id == request.CourseId);
 			if (existingBasketItem is not null)
 			{
-				currentBasket.BasketItems.Remove(existingBasketItem);
+				currentBasket.Items.Remove(existingBasketItem);
 			}
 
-			currentBasket.BasketItems.Add(newBasketItem);
+			currentBasket.Items.Add(newBasketItem);
 			await AddToRedis(cacheKey, currentBasket, cancellationToken);
 			return ServiceResult.SuccessAsNoContent();
 

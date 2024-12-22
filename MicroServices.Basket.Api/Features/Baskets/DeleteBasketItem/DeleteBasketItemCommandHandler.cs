@@ -22,12 +22,12 @@ namespace MicroServices.Basket.Api.Features.Baskets.DeleteBasketItem
 				return ServiceResult.Error("basket not found", HttpStatusCode.NotFound);
 
 			var currentBasket = JsonSerializer.Deserialize<BasketDto>(basketAsString);
-			var basketItemToDelete = currentBasket!.BasketItems.FirstOrDefault(b => b.Id == request.Id);
+			var basketItemToDelete = currentBasket!.Items.FirstOrDefault(b => b.Id == request.Id);
 
 			if (basketItemToDelete is null)
 				return ServiceResult.Error("Basket item not found", HttpStatusCode.NotFound);
 
-			currentBasket.BasketItems.Remove(basketItemToDelete);
+			currentBasket.Items.Remove(basketItemToDelete);
 			basketAsString = JsonSerializer.Serialize(currentBasket);
 			await distributedCache.SetStringAsync(cacheKey, basketAsString, cancellationToken);
 			return ServiceResult.SuccessAsNoContent();
