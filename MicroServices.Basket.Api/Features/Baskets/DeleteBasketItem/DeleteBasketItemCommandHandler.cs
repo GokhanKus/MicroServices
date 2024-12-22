@@ -21,7 +21,7 @@ namespace MicroServices.Basket.Api.Features.Baskets.DeleteBasketItem
 			if (string.IsNullOrEmpty(basketAsString))
 				return ServiceResult.Error("basket not found", HttpStatusCode.NotFound);
 
-			var currentBasket = JsonSerializer.Deserialize<BasketDto>(basketAsString);
+			var currentBasket = JsonSerializer.Deserialize<Data.Basket>(basketAsString);
 			var basketItemToDelete = currentBasket!.Items.FirstOrDefault(b => b.Id == request.Id);
 
 			if (basketItemToDelete is null)

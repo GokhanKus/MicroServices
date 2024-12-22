@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MicroServices.Basket.Api.Const;
+using MicroServices.Basket.Api.Data;
 using MicroServices.Basket.Api.Dto;
 using MicroServices.Shared;
 using MicroServices.Shared.Services;
@@ -8,7 +9,7 @@ using System.Text.Json;
 
 namespace MicroServices.Basket.Api.Features.Baskets.AddBasketItem
 {
-	public class AddBasketItemCommandHandler(IDistributedCache distributedCache,IIdentityService identityService) : IRequestHandler<AddBasketItemCommand, ServiceResult>
+	public class AddBasketItemCommandHandler(IDistributedCache distributedCache, IIdentityService identityService) : IRequestHandler<AddBasketItemCommand, ServiceResult>
 	{
 		public async Task<ServiceResult> Handle(AddBasketItemCommand request, CancellationToken cancellationToken)
 		{
@@ -18,19 +19,19 @@ namespace MicroServices.Basket.Api.Features.Baskets.AddBasketItem
 
 			var basketAsString = await distributedCache.GetStringAsync(cacheKey, cancellationToken);
 
-			BasketDto? currentBasket;
+			Data.Basket? currentBasket;
 
-			var newBasketItem = new BasketItemDto(request.CourseId, request.CourseName, request.CoursePrice, request.ImageUrl, PriceByApplyDiscountRate: null);
+			var newBasketItem = new BasketItem(request.CourseId, request.CourseName, request.CoursePrice, request.ImageUrl, priceByApplyDiscountRate: null);
 
 			if (string.IsNullOrEmpty(basketAsString))
 			{
-				currentBasket = new BasketDto(userId, [newBasketItem]);
+				currentBasket = new Data.Basket(userId, [newBasketItem]);
 				await AddToRedis(cacheKey, currentBasket, cancellationToken);
 				return ServiceResult.SuccessAsNoContent();
 
 			}
 
-			currentBasket = JsonSerializer.Deserialize<BasketDto>(basketAsString);
+			currentBasket = JsonSerializer.Deserialize<Data.Basket>(basketAsString);
 
 			//client bir kursu birden fazla sepete ekleyemez, onun için asagida ufak bir business var sonradan refactor edilecek
 			var existingBasketItem = currentBasket!.Items.FirstOrDefault(bi => bi.Id == request.CourseId);
@@ -45,7 +46,7 @@ namespace MicroServices.Basket.Api.Features.Baskets.AddBasketItem
 
 		}
 
-		private async Task AddToRedis(string cacheKey, BasketDto? currentBasket, CancellationToken cancellationToken)
+		private async Task AddToRedis(string cacheKey, Data.Basket? currentBasket, CancellationToken cancellationToken)
 		{
 			var basketAsString = JsonSerializer.Serialize(currentBasket);
 			await distributedCache.SetStringAsync(cacheKey, basketAsString, cancellationToken);
