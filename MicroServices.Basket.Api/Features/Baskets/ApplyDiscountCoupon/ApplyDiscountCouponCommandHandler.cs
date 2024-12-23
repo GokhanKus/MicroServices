@@ -22,6 +22,10 @@ namespace MicroServices.Basket.Api.Features.Baskets
 				return ServiceResult<BasketDto>.Error("basket not found", HttpStatusCode.NotFound);
 
 			var basket = JsonSerializer.Deserialize<Data.Basket>(basketAsJson)!;
+
+			if(!basket.Items.Any()) //sepette urun yoksa eklenecek bir kupon da olamaz..
+				return ServiceResult<BasketDto>.Error("basket item not found", HttpStatusCode.NotFound);
+
 			basket.ApplyNewDiscount(request.Coupon, request.DiscountRate);
 
 			basketAsJson = JsonSerializer.Serialize(basket);
