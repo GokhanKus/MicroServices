@@ -3,13 +3,12 @@ using MicroServices.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCommonServiceExt(typeof(BasketAssembly));
-
+//TODO: BasketService'in interfaceyi yazilmadi concrete olarak kullaniyoruz ioc kaydi yapilabilir
+builder.Services.AddScoped<BasketService>();
 builder.Services.AddStackExchangeRedisCache(options =>
 {
 	options.Configuration = builder.Configuration.GetConnectionString("redis");

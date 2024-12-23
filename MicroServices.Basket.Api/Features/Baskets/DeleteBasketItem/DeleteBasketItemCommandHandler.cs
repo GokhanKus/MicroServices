@@ -1,35 +1,29 @@
 ﻿using MediatR;
-using MicroServices.Basket.Api.Const;
-using MicroServices.Basket.Api.Dto;
 using MicroServices.Shared;
-using MicroServices.Shared.Services;
-using Microsoft.Extensions.Caching.Distributed;
 using System.Net;
 using System.Text.Json;
 
 namespace MicroServices.Basket.Api.Features.Baskets.DeleteBasketItem
 {
-	public class DeleteBasketItemCommandHandler(IDistributedCache distributedCache, IIdentityService identityService) : IRequestHandler<DeleteBasketItemCommand, ServiceResult>
+	public class DeleteBasketItemCommandHandler(BasketService basketService) : IRequestHandler<DeleteBasketItemCommand, ServiceResult>
 	{
 		public async Task<ServiceResult> Handle(DeleteBasketItemCommand request, CancellationToken cancellationToken)
 		{
-			var userId = identityService.UserId;
-			var cacheKey = string.Format(BasketConst.BasketCacheKey, userId);
+			var basketAsJson = await basketService.GetBasketFromCache(cancellationToken);
 
-			var basketAsString = await distributedCache.GetStringAsync(cacheKey, cancellationToken);
-
-			if (string.IsNullOrEmpty(basketAsString))
+			if (string.IsNullOrEmpty(basketAsJson))
 				return ServiceResult.Error("basket not found", HttpStatusCode.NotFound);
 
-			var currentBasket = JsonSerializer.Deserialize<Data.Basket>(basketAsString);
+			var currentBasket = JsonSerializer.Deserialize<Data.Basket>(basketAsJson);
 			var basketItemToDelete = currentBasket!.Items.FirstOrDefault(b => b.Id == request.Id);
 
 			if (basketItemToDelete is null)
 				return ServiceResult.Error("Basket item not found", HttpStatusCode.NotFound);
 
 			currentBasket.Items.Remove(basketItemToDelete);
-			basketAsString = JsonSerializer.Serialize(currentBasket);
-			await distributedCache.SetStringAsync(cacheKey, basketAsString, cancellationToken);
+
+			await basketService.CreateBasketCacheAsync(currentBasket, cancellationToken);
+
 			return ServiceResult.SuccessAsNoContent();
 		}
 	}
