@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using MicroServices.Basket.Api.Const;
 using MicroServices.Basket.Api.Data;
-using MicroServices.Basket.Api.Dto;
 using MicroServices.Shared;
 using MicroServices.Shared.Services;
 using Microsoft.Extensions.Caching.Distributed;
@@ -28,19 +27,19 @@ namespace MicroServices.Basket.Api.Features.Baskets.AddBasketItem
 				currentBasket = new Data.Basket(userId, [newBasketItem]);
 				await AddToRedis(cacheKey, currentBasket, cancellationToken);
 				return ServiceResult.SuccessAsNoContent();
-
 			}
 
 			currentBasket = JsonSerializer.Deserialize<Data.Basket>(basketAsString);
 
 			//client bir kursu birden fazla sepete ekleyemez, onun için asagida ufak bir business var sonradan refactor edilecek
 			var existingBasketItem = currentBasket!.Items.FirstOrDefault(bi => bi.Id == request.CourseId);
-			if (existingBasketItem is not null)
-			{
-				currentBasket.Items.Remove(existingBasketItem);
-			}
 
+			if (existingBasketItem is not null)
+				currentBasket.Items.Remove(existingBasketItem);
+			
 			currentBasket.Items.Add(newBasketItem);
+			currentBasket.ApplyAvailableDiscount(); //baskette 1 urun var indirim eklendi sonra tekrar ürün eklenince indirim o ürün icin gecerli olmuyor, bu satir o yuzden 
+
 			await AddToRedis(cacheKey, currentBasket, cancellationToken);
 			return ServiceResult.SuccessAsNoContent();
 

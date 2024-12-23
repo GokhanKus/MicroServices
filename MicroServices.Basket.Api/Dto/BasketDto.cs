@@ -2,21 +2,12 @@
 
 namespace MicroServices.Basket.Api.Dto
 {
-	public record BasketDto
+	public record BasketDto(List<BasketItemDto> Items)
 	{
-		// primary ctor'da attribute yazilamadigi icin (JsonIgnore orn) bu sekilde acik acik yazdik
-		[JsonIgnore] public Guid UserId { get; init; }
-		public List<BasketItemDto> Items { get; set; } = new();
-		public BasketDto(Guid userId, List<BasketItemDto> items)
-		{
-			UserId = userId;
-			Items = items;
-		}
-		public BasketDto()
-		{
-
-		}
+		[JsonIgnore] public bool IsApplyDiscount => DiscountRate is > 0 && !string.IsNullOrEmpty(Coupon);
+		public float? DiscountRate { get; set; }
+		public string? Coupon { get; set; }
+		public decimal TotalPrice => Items.Sum(i => i.Price);
+		public decimal? TotalPriceWithAppliedDiscount => !IsApplyDiscount ? null : Items.Sum(i => i.PriceByApplyDiscountRate);
 	}
-	//public record BasketDto(Guid UserId, List<BasketItemDto> Items);
-
 }

@@ -1,4 +1,4 @@
-﻿using MicroServices.Basket.Api.Dto;
+﻿using System.Text.Json.Serialization;
 
 namespace MicroServices.Basket.Api.Data
 {
@@ -19,34 +19,35 @@ namespace MicroServices.Basket.Api.Data
 		public float? DiscountRate { get; set; }
 		public string? Coupon { get; set; }
 
-		public bool IsApplyDiscount => DiscountRate is > 0 && !string.IsNullOrEmpty(Coupon);
-		public decimal TotalPrice => Items.Sum(i => i.Price);
-		public decimal? TotalPriceWithAppliedDiscount => !IsApplyDiscount ? null : Items.Sum(i => i.PriceByApplyDiscountRate);
+		[JsonIgnore] public bool IsApplyDiscount => DiscountRate is > 0 && !string.IsNullOrEmpty(Coupon);
+		[JsonIgnore] public decimal TotalPrice => Items.Sum(i => i.Price);
+		[JsonIgnore] public decimal? TotalPriceWithAppliedDiscount => !IsApplyDiscount ? null : Items.Sum(i => i.PriceByApplyDiscountRate);
 
 		public void ApplyNewDiscount(string coupon, float discountRate)
 		{
 			Coupon = coupon;
 			DiscountRate = discountRate;
 
-			foreach (var basket in Items)
+			foreach (var basketItem in Items)
 			{
-				basket.PriceByApplyDiscountRate = basket.Price * (decimal)(1 - discountRate);
+				basketItem.PriceByApplyDiscountRate = basketItem.Price * (decimal)(1 - discountRate);
 			}
 		}
 		public void ApplyAvailableDiscount()
 		{
-			foreach (var basket in Items)
+			if (!IsApplyDiscount) return;
+			foreach (var basketItem in Items)
 			{
-				basket.PriceByApplyDiscountRate = basket.Price * (decimal)(1 - DiscountRate!);
+				basketItem.PriceByApplyDiscountRate = basketItem.Price * (decimal)(1 - DiscountRate!);
 			}
 		}
 		public void ClearDiscount()
 		{
 			DiscountRate = null;
 			Coupon = null;
-			foreach (var basket in Items)
+			foreach (var basketItem in Items)
 			{
-				basket.PriceByApplyDiscountRate = null;
+				basketItem.PriceByApplyDiscountRate = null;
 			}
 		}
 	}
