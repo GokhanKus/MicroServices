@@ -1,4 +1,5 @@
 using MicroServices.Discount.Api;
+using MicroServices.Discount.Api.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddOptionsExt();
+builder.Services.AddDatabaseServiceExt();
 builder.Services.AddCommonServiceExt(typeof(DiscountAssembly));
 builder.Services.AddVersioningExt();
 

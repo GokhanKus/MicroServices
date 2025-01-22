@@ -6,3 +6,4 @@ global using MicroServices.Shared.Extensions;
 global using MassTransit;
 global using System.Net;
 global using FluentValidation;
+global using MicroServices.Discount.Api.Repositories;
