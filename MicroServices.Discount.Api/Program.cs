@@ -1,3 +1,4 @@
+using MicroServices.Catalog.Api.Features.Courses;
 using MicroServices.Discount.Api;
 using MicroServices.Discount.Api.Options;
 
@@ -14,6 +15,8 @@ builder.Services.AddCommonServiceExt(typeof(DiscountAssembly));
 builder.Services.AddVersioningExt();
 
 var app = builder.Build();
+
+app.AddDiscountGroupEndpointExt(app.AddVersionSetExt());
 
 if (app.Environment.IsDevelopment())
 {
