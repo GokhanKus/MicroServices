@@ -1,10 +1,8 @@
 ﻿using MediatR;
-using MicroServices.File.Api.Features.File.Upload;
 using MicroServices.Shared.Extensions;
-using MicroServices.Shared.Filters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MicroServices.File.Api.Features.Discounts.Create
+namespace MicroServices.File.Api.Features.File.Upload
 {
 	public static class UploadFileCommandEndpoint
 	{
