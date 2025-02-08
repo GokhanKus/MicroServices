@@ -1,4 +1,5 @@
 using MicroServices.File.Api;
+using MicroServices.File.Api.Features.Courses;
 using MicroServices.Shared.Extensions;
 using Microsoft.Extensions.FileProviders;
 
@@ -18,6 +19,7 @@ builder.Services.AddVersioningExt();
 
 var app = builder.Build();
 
+app.AddFileGroupEndpointExt(app.AddVersionSetExt());
 app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
