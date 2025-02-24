@@ -14,7 +14,7 @@ namespace MicroServices.Order.Domain.Entities
 		public Address Address { get; set; } = null!;
 		public decimal TotalPrice { get; set; }
 		public float? DiscountRate { get; set; }
-		public Guid PaymentId { get; set; }
+		public Guid? PaymentId { get; set; }
 		public List<OrderItem> OrderItems { get; set; } = new();
 
 		//behaviour methods - Yardımcı methodlar (Rich Domain Model)
