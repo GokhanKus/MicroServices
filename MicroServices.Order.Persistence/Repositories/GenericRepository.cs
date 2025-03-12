@@ -13,7 +13,6 @@ namespace MicroServices.Order.Persistence.Repositories
 		{
 			return _dbSet.AnyAsync(TEntity => TEntity.Id.Equals(id));	
 		}
-
 		public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
 		{
 			return _dbSet.AnyAsync(predicate);
