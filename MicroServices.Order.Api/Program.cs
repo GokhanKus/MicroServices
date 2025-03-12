@@ -1,4 +1,6 @@
+using MicroServices.Order.Api;
 using MicroServices.Order.Api.Endpoints.Orders;
+using MicroServices.Order.Application;
 using MicroServices.Order.Application.Contracts.Repositories;
 using MicroServices.Order.Application.Contracts.UnitOfWorks;
 using MicroServices.Order.Persistence;
@@ -12,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
+builder.Services.AddCommonServiceExt(typeof(OrderApplicationAssembly));
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {

@@ -11,7 +11,7 @@
 		//behaviour methods - Yardımcı methodlar (Rich Domain Model)
 		public void SetItem(Guid productId, string productName, decimal unitPrice)
 		{
-			if (string.IsNullOrEmpty(ProductName)) throw new ArgumentNullException(nameof(ProductName),"product name cannot be empty");
+			if (string.IsNullOrEmpty(productName)) throw new ArgumentNullException(nameof(ProductName),"product name cannot be empty");
 			if (unitPrice <= 0) throw new ArgumentOutOfRangeException("unit price must be greater than 0");
 
 			ProductId = productId;
