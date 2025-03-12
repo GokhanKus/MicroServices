@@ -11,7 +11,7 @@ namespace MicroServices.Basket.Api.Features.Baskets.ApplyDiscountCoupon
 			group.MapPut("/apply-discount-coupon", async (ApplyDiscountCouponCommand command, IMediator mediator)
 				=> (await mediator.Send(command)).ToGenericResult())
 				.WithName("ApplyDiscountCoupon")
-				.AddEndpointFilter<ValidationFilter<ApplyDiscountCouponCommandValidator>>()
+				.AddEndpointFilter<ValidationFilter<ApplyDiscountCouponCommand>>()
 				.MapToApiVersion(1, 0);
 
 			return group;
