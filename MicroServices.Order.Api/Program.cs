@@ -1,4 +1,3 @@
-using MicroServices.Order.Api;
 using MicroServices.Order.Api.Endpoints.Orders;
 using MicroServices.Order.Application;
 using MicroServices.Order.Application.Contracts.Repositories;

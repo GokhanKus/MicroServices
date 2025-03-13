@@ -2,7 +2,6 @@
 using MediatR;
 using MicroServices.Order.Application.Contracts.Repositories;
 using MicroServices.Order.Application.Features.Orders.Create;
-using MicroServices.Order.Domain.Entities;
 using MicroServices.Shared;
 using MicroServices.Shared.Services;
 

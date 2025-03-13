@@ -7,7 +7,8 @@ namespace MicroServices.Order.Api.Endpoints.Orders
 		public static void AddOrderGroupEndpointExt(this WebApplication app, ApiVersionSet apiVersionSet)
 		{
 			app.MapGroup("api/v{version:apiVersion}/orders").WithTags("Orders").WithApiVersionSet(apiVersionSet)
-				.CreateOrderGroupItemEndpoint();
+				.CreateOrderGroupItemEndpoint()
+				.GetOrdersGroupItemEndpoint();
 		}
 	}
 }

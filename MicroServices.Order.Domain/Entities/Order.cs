@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MicroServices.Order.Domain.Entities
 {
-	public class Order:BaseEntity<Guid>
+	public class Order : BaseEntity<Guid>
 	{
 		public string Code { get; set; } = null!;
 		public DateTime Created { get; set; }
@@ -46,7 +46,8 @@ namespace MicroServices.Order.Domain.Entities
 				TotalPrice = 0,
 				DiscountRate = discountRate
 			};
-		}public static Order CreateUnPaidOrder(Guid buyerId, float? discountRate)
+		}
+		public static Order CreateUnPaidOrder(Guid buyerId, float? discountRate)
 		{
 			return new Order
 			{
@@ -62,6 +63,10 @@ namespace MicroServices.Order.Domain.Entities
 		public void AddOrderItem(Guid productId, string productName, decimal unitPrice)
 		{
 			var orderItem = new OrderItem();
+			
+			if (DiscountRate.HasValue)
+				unitPrice -= unitPrice * (decimal)DiscountRate.Value / 100;
+
 			orderItem.SetItem(productId, productName, unitPrice);
 			OrderItems.Add(orderItem);
 
@@ -82,9 +87,6 @@ namespace MicroServices.Order.Domain.Entities
 		private void CalculateTotalPrice()
 		{
 			TotalPrice = OrderItems.Sum(x => x.UnitPrice);
-
-			if (DiscountRate.HasValue)
-				TotalPrice -= TotalPrice * (decimal)DiscountRate.Value / 100;
 		}
 	}
-}
+} 
